@@ -2188,7 +2188,7 @@ const migrateConfig = {
           state.settings.sidebarIcons.visible.push('pomodoro')
         }
       }
-      
+
       // Initialize pomodoro state if it doesn't exist
       if (!state.pomodoro) {
         state.pomodoro = {
@@ -2196,7 +2196,7 @@ const migrateConfig = {
           currentPhase: 'work',
           isRunning: false,
           workCount: 0,
-          
+
           settings: {
             workDuration: 25,
             shortBreakDuration: 5,
@@ -2206,14 +2206,14 @@ const migrateConfig = {
             showFloatWindow: true,
             enableNotifications: true
           },
-          
+
           tasks: [],
           currentTaskId: null,
           sessions: [],
           showFloatWindow: false
         }
       }
-      
+
       return state
     } catch (error) {
       logger.error('migrate 137 error', error as Error)

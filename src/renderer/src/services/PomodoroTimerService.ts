@@ -1,12 +1,12 @@
+import type { PomodoroPhase } from '@renderer/pages/pomodoro/hooks/usePomodoro'
 import store from '@renderer/store'
-import { 
-  setTimeLeft,
+import {
+  incrementPomodoroCount,
   setCurrentPhase,
   setIsRunning,
-  setWorkCount,
-  incrementPomodoroCount
+  setTimeLeft,
+  setWorkCount
 } from '@renderer/store/pomodoro'
-import type { PomodoroPhase } from '@renderer/pages/pomodoro/hooks/usePomodoro'
 
 class PomodoroTimerService {
   private static instance: PomodoroTimerService | null = null
@@ -27,7 +27,7 @@ class PomodoroTimerService {
     }
 
     store.dispatch(setIsRunning(true))
-    
+
     this.intervalId = setInterval(() => {
       this.tick()
     }, 1000)
@@ -62,20 +62,20 @@ class PomodoroTimerService {
 
   skipPhase(): void {
     const state = store.getState().pomodoro
-    
+
     if (state.currentPhase === 'work') {
       store.dispatch(incrementPomodoroCount())
       const newWorkCount = state.workCount + 1
       store.dispatch(setWorkCount(newWorkCount))
-      
-      const nextPhase: PomodoroPhase = newWorkCount % (state.settings?.longBreakInterval || 4) === 0 
-        ? 'longBreak' 
-        : 'shortBreak'
-      
-      const nextDuration = nextPhase === 'longBreak' 
-        ? (state.settings?.longBreakDuration || 15) * 60
-        : (state.settings?.shortBreakDuration || 5) * 60
-      
+
+      const nextPhase: PomodoroPhase =
+        newWorkCount % (state.settings?.longBreakInterval || 4) === 0 ? 'longBreak' : 'shortBreak'
+
+      const nextDuration =
+        nextPhase === 'longBreak'
+          ? (state.settings?.longBreakDuration || 15) * 60
+          : (state.settings?.shortBreakDuration || 5) * 60
+
       store.dispatch(setCurrentPhase(nextPhase))
       store.dispatch(setTimeLeft(nextDuration))
     } else {
@@ -87,14 +87,14 @@ class PomodoroTimerService {
 
   private tick(): void {
     const state = store.getState().pomodoro
-    
+
     if (!state.isRunning || state.timeLeft <= 0) {
       return
     }
-    
+
     const newTimeLeft = Math.max(0, state.timeLeft - 1)
     store.dispatch(setTimeLeft(newTimeLeft))
-    
+
     if (newTimeLeft === 0) {
       this.handlePhaseCompleted(state.currentPhase === 'work')
     }
@@ -102,21 +102,21 @@ class PomodoroTimerService {
 
   private handlePhaseCompleted(wasWorkPhase: boolean): void {
     const state = store.getState().pomodoro
-    
+
     if (wasWorkPhase) {
       store.dispatch(incrementPomodoroCount())
       const newWorkCount = state.workCount + 1
       store.dispatch(setWorkCount(newWorkCount))
-      
+
       // Determine next break type
-      const nextPhase: PomodoroPhase = newWorkCount % (state.settings?.longBreakInterval || 4) === 0 
-        ? 'longBreak' 
-        : 'shortBreak'
-      
-      const nextDuration = nextPhase === 'longBreak' 
-        ? (state.settings?.longBreakDuration || 15) * 60
-        : (state.settings?.shortBreakDuration || 5) * 60
-      
+      const nextPhase: PomodoroPhase =
+        newWorkCount % (state.settings?.longBreakInterval || 4) === 0 ? 'longBreak' : 'shortBreak'
+
+      const nextDuration =
+        nextPhase === 'longBreak'
+          ? (state.settings?.longBreakDuration || 15) * 60
+          : (state.settings?.shortBreakDuration || 5) * 60
+
       store.dispatch(setCurrentPhase(nextPhase))
       store.dispatch(setTimeLeft(nextDuration))
     } else {
@@ -125,7 +125,7 @@ class PomodoroTimerService {
       store.dispatch(setCurrentPhase('work'))
       store.dispatch(setTimeLeft(workDuration))
     }
-    
+
     // Show notification
     this.showPhaseCompletedNotification(wasWorkPhase)
   }
@@ -133,13 +133,11 @@ class PomodoroTimerService {
   private showPhaseCompletedNotification(wasWorkPhase: boolean): void {
     if ('Notification' in window && Notification.permission === 'granted') {
       const title = wasWorkPhase ? 'Work Session Completed!' : 'Break Time Over!'
-      const body = wasWorkPhase 
-        ? 'Time for a break! 🎉'
-        : 'Ready to get back to work? 💪'
-      
+      const body = wasWorkPhase ? 'Time for a break! 🎉' : 'Ready to get back to work? 💪'
+
       new Notification(title, { body, icon: '/favicon.ico' })
     }
-    
+
     // Play sound if available
     try {
       const audio = new Audio('/notification.mp3')

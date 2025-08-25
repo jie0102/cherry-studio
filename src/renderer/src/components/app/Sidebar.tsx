@@ -15,6 +15,7 @@ import { isEmoji } from '@renderer/utils'
 import { Avatar, Tooltip } from 'antd'
 import {
   Code,
+  Eye,
   FileSearch,
   Folder,
   Languages,
@@ -26,8 +27,7 @@ import {
   Settings,
   Sparkle,
   Sun,
-  Timer,
-  Eye
+  Timer
 } from 'lucide-react'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'

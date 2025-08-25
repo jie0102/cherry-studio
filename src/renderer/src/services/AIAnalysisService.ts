@@ -1,8 +1,8 @@
 import { loggerService } from '@logger'
 import AiProvider from '@renderer/aiCore'
+import { CompletionsParams } from '@renderer/aiCore/middleware/schemas'
 import { getModel } from '@renderer/hooks/useModel'
 import { getProviderByModel } from '@renderer/services/AssistantService'
-import { CompletionsParams } from '@renderer/aiCore/middleware/schemas'
 import { Assistant } from '@renderer/types'
 
 // Set up logging
@@ -55,9 +55,9 @@ class AIAnalysisService {
 
       const prompt = this.buildAnalysisPrompt(input)
       const aiResponse = await this.callAI(prompt)
-      
+
       const result = this.parseAIResponse(aiResponse)
-      
+
       logger.info('AI focus analysis completed', {
         isFocused: result.isFocused,
         confidence: result.confidence,
@@ -69,10 +69,9 @@ class AIAnalysisService {
         success: true,
         timestamp
       }
-
     } catch (error) {
       logger.error('AI focus analysis failed:', error as Error)
-      
+
       return {
         success: false,
         isFocused: true, // Default to focused on error to avoid false alerts
@@ -95,7 +94,7 @@ class AIAnalysisService {
       `用户当前任务: ${input.taskDescription}`,
       '',
       '## 应用信息',
-      input.activeApp ? `当前活动应用: ${input.activeApp}` : '未检测到活动应用',
+      input.activeApp ? `当前活动应用: ${input.activeApp}` : '未检测到活动应用'
     ]
 
     if (input.allowedApps.length > 0) {
@@ -164,9 +163,9 @@ class AIAnalysisService {
         throw new Error('No provider found for current model')
       }
 
-      logger.debug('Calling AI model for analysis', { 
+      logger.debug('Calling AI model for analysis', {
         modelId: currentModel.id,
-        providerId: provider.id 
+        providerId: provider.id
       })
 
       // Create AI provider instance
@@ -193,14 +192,13 @@ class AIAnalysisService {
 
       // Call AI
       const result = await aiProvider.completions(completionsParams)
-      
+
       const text = result.getText()
       if (!text) {
         throw new Error('No response text from AI model')
       }
 
       return text.trim()
-
     } catch (error) {
       logger.error('AI model call failed:', error as Error)
       throw error
@@ -222,7 +220,8 @@ class AIAnalysisService {
       let jsonStr = jsonMatch ? jsonMatch[1] : response
 
       // Clean up common formatting issues
-      jsonStr = jsonStr.trim()
+      jsonStr = jsonStr
+        .trim()
         .replace(/^[^{]*/, '') // Remove text before first {
         .replace(/[^}]*$/, '') // Remove text after last }
 
@@ -234,15 +233,13 @@ class AIAnalysisService {
         reason: String(parsed.reason || '未提供分析原因'),
         suggestions: Array.isArray(parsed.suggestions) ? parsed.suggestions.map(String) : undefined
       }
-
     } catch (parseError) {
       logger.warn('Failed to parse AI response as JSON, attempting text analysis:', parseError as Error)
-      
+
       // Fallback: simple text analysis
       const lowerResponse = response.toLowerCase()
-      const isFocused = !lowerResponse.includes('不专注') && 
-                       !lowerResponse.includes('分心') && 
-                       !lowerResponse.includes('false')
+      const isFocused =
+        !lowerResponse.includes('不专注') && !lowerResponse.includes('分心') && !lowerResponse.includes('false')
 
       return {
         isFocused,
@@ -288,7 +285,6 @@ class AIAnalysisService {
       return {
         isAvailable: true
       }
-
     } catch (error) {
       return {
         isAvailable: false,

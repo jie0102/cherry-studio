@@ -1,16 +1,17 @@
 import { loggerService } from '@logger'
 import store from '@renderer/store'
-import { 
-  setIsActive, 
-  setLastCheckTime, 
-  addLog, 
-  incrementTotalChecks, 
-  incrementFocusedChecks, 
+import {
+  addLog,
   incrementDistractedChecks,
-  selectFocusMonitor 
+  incrementFocusedChecks,
+  incrementTotalChecks,
+  selectFocusMonitor,
+  setIsActive,
+  setLastCheckTime
 } from '@renderer/store/focusMonitor'
-import systemAppService from './SystemAppService'
 import { AppNameNormalizer } from '@renderer/utils/AppNameNormalizer'
+
+import systemAppService from './SystemAppService'
 
 // Set up logging
 loggerService.initWindowSource('main')
@@ -49,7 +50,7 @@ class FocusMonitoringService {
     }
 
     const state = selectFocusMonitor(store.getState())
-    
+
     if (!state.taskDescription.trim()) {
       throw new Error('Task description is required')
     }
@@ -118,12 +119,12 @@ class FocusMonitoringService {
       logger.debug('Performing focus monitoring check')
 
       const result = await this.analyzeCurrentFocus()
-      
+
       // Update Redux state
       store.dispatch(setLastCheckTime(result.timestamp))
       store.dispatch(addLog(result))
       store.dispatch(incrementTotalChecks())
-      
+
       if (result.isFocused) {
         store.dispatch(incrementFocusedChecks())
       } else {
@@ -140,16 +141,17 @@ class FocusMonitoringService {
       if (!result.isFocused) {
         this.showInterventionAlert(result)
       }
-
     } catch (error) {
       logger.error('Focus monitoring check failed', error as Error)
-      
+
       // Add error log
-      store.dispatch(addLog({
-        isFocused: false,
-        reason: `监控检查失败: ${error instanceof Error ? error.message : '未知错误'}`,
-        timestamp: Date.now()
-      }))
+      store.dispatch(
+        addLog({
+          isFocused: false,
+          reason: `监控检查失败: ${error instanceof Error ? error.message : '未知错误'}`,
+          timestamp: Date.now()
+        })
+      )
     }
 
     // Schedule next check
@@ -165,7 +167,7 @@ class FocusMonitoringService {
 
     // Get current active application
     const activeApp = await systemAppService.getActiveApp()
-    
+
     if (!activeApp) {
       return {
         isFocused: true, // Assume focused if no app detected
@@ -212,12 +214,15 @@ class FocusMonitoringService {
   /**
    * Check if current app is in blocked list
    */
-  private checkBlockedApps(currentApp: string, blockedApps: string[]): {
+  private checkBlockedApps(
+    currentApp: string,
+    blockedApps: string[]
+  ): {
     isFocused: boolean
     reason: string
   } {
     const matchResult = AppNameNormalizer.findBestMatch(currentApp, blockedApps)
-    
+
     if (matchResult.score > 0.6) {
       return {
         isFocused: false,
@@ -234,12 +239,15 @@ class FocusMonitoringService {
   /**
    * Check if current app is in allowed list
    */
-  private checkAllowedApps(currentApp: string, allowedApps: string[]): {
+  private checkAllowedApps(
+    currentApp: string,
+    allowedApps: string[]
+  ): {
     isFocused: boolean
     reason: string
   } {
     const matchResult = AppNameNormalizer.findBestMatch(currentApp, allowedApps)
-    
+
     if (matchResult.score > 0.6) {
       return {
         isFocused: true,

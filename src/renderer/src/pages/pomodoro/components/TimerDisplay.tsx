@@ -1,7 +1,7 @@
+import { Progress } from 'antd'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Progress } from 'antd'
 
 import { usePomodoroTimer } from '../hooks/usePomodoro'
 
@@ -30,10 +30,8 @@ const TimerDisplay: FC = () => {
 
   return (
     <Container>
-      <PhaseIndicator $isRunning={isRunning}>
-        {getPhaseLabel(currentPhase)}
-      </PhaseIndicator>
-      
+      <PhaseIndicator $isRunning={isRunning}>{getPhaseLabel(currentPhase)}</PhaseIndicator>
+
       <TimerWrapper>
         <ProgressRing
           type="circle"
@@ -44,9 +42,7 @@ const TimerDisplay: FC = () => {
           trailColor="var(--color-border-soft)"
           format={() => ''}
         />
-        <TimeDisplay>
-          {formatTime(timeLeft)}
-        </TimeDisplay>
+        <TimeDisplay>{formatTime(timeLeft)}</TimeDisplay>
       </TimerWrapper>
 
       <StatusIndicator $isRunning={isRunning}>
@@ -71,7 +67,7 @@ const PhaseIndicator = styled.div<{ $isRunning: boolean }>`
   padding: 12px 24px;
   border-radius: 24px;
   background-color: var(--color-background-soft);
-  border: 2px solid ${props => props.$isRunning ? 'var(--color-primary)' : 'var(--color-border)'};
+  border: 2px solid ${(props) => (props.$isRunning ? 'var(--color-primary)' : 'var(--color-border)')};
   transition: border-color 0.3s ease;
 `
 
@@ -100,7 +96,7 @@ const TimeDisplay = styled.div`
 
 const StatusIndicator = styled.div<{ $isRunning: boolean }>`
   font-size: 16px;
-  color: ${props => props.$isRunning ? 'var(--color-success)' : 'var(--color-text-3)'};
+  color: ${(props) => (props.$isRunning ? 'var(--color-success)' : 'var(--color-text-3)')};
   font-weight: 500;
 `
 

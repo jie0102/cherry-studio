@@ -56,7 +56,6 @@ class OCRService {
 
       this.isInitialized = true
       logger.info('Tesseract.js OCR service initialized successfully')
-
     } catch (error) {
       logger.error('Failed to initialize Tesseract.js:', error as Error)
       this.isInitialized = false
@@ -64,7 +63,6 @@ class OCRService {
       throw error
     }
   }
-
 
   /**
    * Check if OCR is supported and available
@@ -104,13 +102,13 @@ class OCRService {
 
       // Use the image data directly
       const result = await this.worker.recognize(imageData)
-      
+
       const extractedText = result.data.text.trim()
       const confidence = result.data.confidence
 
-      logger.debug('OCR extraction completed', { 
+      logger.debug('OCR extraction completed', {
         textLength: extractedText.length,
-        confidence: confidence.toFixed(2) 
+        confidence: confidence.toFixed(2)
       })
 
       return {
@@ -119,10 +117,9 @@ class OCRService {
         confidence,
         timestamp
       }
-
     } catch (error) {
       logger.error('OCR text extraction failed:', error as Error)
-      
+
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown OCR error',
@@ -139,7 +136,7 @@ class OCRService {
       // Create canvas for image preprocessing
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
-      
+
       if (!ctx) {
         throw new Error('Cannot create canvas context')
       }
@@ -166,11 +163,11 @@ class OCRService {
       // Convert to grayscale and enhance contrast
       for (let i = 0; i < data.length; i += 4) {
         const gray = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2])
-        
+
         // Enhance contrast (simple threshold)
         const enhanced = gray > 128 ? 255 : 0
-        
-        data[i] = enhanced     // Red
+
+        data[i] = enhanced // Red
         data[i + 1] = enhanced // Green
         data[i + 2] = enhanced // Blue
         // Alpha stays the same
@@ -187,7 +184,6 @@ class OCRService {
 
       // Perform OCR on processed image
       return await this.extractText(processedImageData)
-
     } catch (error) {
       logger.error('OCR preprocessing failed, falling back to direct extraction:', error as Error)
       // Fallback to direct extraction
@@ -208,7 +204,7 @@ class OCRService {
       }
       this.worker = null
     }
-    
+
     this.isInitialized = false
     this.initializationPromise = null
   }

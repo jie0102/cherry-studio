@@ -2,9 +2,9 @@ import '@renderer/databases'
 
 import { loggerService } from '@logger'
 import store, { persistor } from '@renderer/store'
+import { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { useEffect } from 'react'
 
 import TopViewContainer from './components/TopView'
 import AntdProvider from './context/AntdProvider'

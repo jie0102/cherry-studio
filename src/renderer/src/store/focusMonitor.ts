@@ -58,7 +58,7 @@ const focusMonitorSlice = createSlice({
       }
     },
     removeAllowedApp: (state, action: PayloadAction<string>) => {
-      state.allowedApps = state.allowedApps.filter(app => app !== action.payload)
+      state.allowedApps = state.allowedApps.filter((app) => app !== action.payload)
     },
     addBlockedApp: (state, action: PayloadAction<string>) => {
       if (!state.blockedApps.includes(action.payload)) {
@@ -66,7 +66,7 @@ const focusMonitorSlice = createSlice({
       }
     },
     removeBlockedApp: (state, action: PayloadAction<string>) => {
-      state.blockedApps = state.blockedApps.filter(app => app !== action.payload)
+      state.blockedApps = state.blockedApps.filter((app) => app !== action.payload)
     },
 
     // Status actions

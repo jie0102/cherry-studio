@@ -17,21 +17,21 @@ export interface PomodoroState {
   currentPhase: PomodoroPhase
   isRunning: boolean
   workCount: number // completed work sessions today
-  
+
   // Settings
   settings?: PomodoroSettings & {
     dailyGoal?: number
     showFloatWindow?: boolean
     enableNotifications?: boolean
   }
-  
+
   // Tasks
   tasks: PomodoroTask[]
   currentTaskId: string | null
-  
+
   // Sessions history
   sessions: PomodoroSession[]
-  
+
   // UI state
   showFloatWindow: boolean
 }
@@ -41,7 +41,7 @@ const initialState: PomodoroState = {
   currentPhase: 'work',
   isRunning: false,
   workCount: 0,
-  
+
   settings: {
     workDuration: 25,
     shortBreakDuration: 5,
@@ -51,7 +51,7 @@ const initialState: PomodoroState = {
     showFloatWindow: true,
     enableNotifications: true
   },
-  
+
   tasks: [],
   currentTaskId: null,
   sessions: [],
@@ -66,24 +66,24 @@ const pomodoroSlice = createSlice({
     setTimeLeft: (state, action: PayloadAction<number>) => {
       state.timeLeft = action.payload
     },
-    
+
     setCurrentPhase: (state, action: PayloadAction<PomodoroPhase>) => {
       state.currentPhase = action.payload
     },
-    
+
     setIsRunning: (state, action: PayloadAction<boolean>) => {
       state.isRunning = action.payload
     },
-    
+
     setWorkCount: (state, action: PayloadAction<number>) => {
       state.workCount = action.payload
     },
-    
+
     // Settings actions
     setPomodoroState: (state, action: PayloadAction<Partial<PomodoroState>>) => {
       Object.assign(state, action.payload)
     },
-    
+
     updateSettings: (state, action: PayloadAction<Partial<PomodoroState['settings']>>) => {
       if (state.settings) {
         state.settings = { ...state.settings, ...action.payload }
@@ -91,14 +91,14 @@ const pomodoroSlice = createSlice({
         state.settings = action.payload as Required<PomodoroState['settings']>
       }
     },
-    
+
     // Task actions
     addTask: (state, action: PayloadAction<PomodoroTask>) => {
       state.tasks.push(action.payload)
     },
-    
+
     toggleTask: (state, action: PayloadAction<{ id: string; completed: boolean; completedAt?: number }>) => {
-      const task = state.tasks.find(t => t.id === action.payload.id)
+      const task = state.tasks.find((t) => t.id === action.payload.id)
       if (task) {
         task.completed = action.payload.completed
         if (action.payload.completedAt !== undefined) {
@@ -106,42 +106,42 @@ const pomodoroSlice = createSlice({
         }
       }
     },
-    
+
     deleteTask: (state, action: PayloadAction<string>) => {
-      const index = state.tasks.findIndex(t => t.id === action.payload)
+      const index = state.tasks.findIndex((t) => t.id === action.payload)
       if (index !== -1) {
         state.tasks.splice(index, 1)
       }
-      
+
       // Clear current task if it was deleted
       if (state.currentTaskId === action.payload) {
         state.currentTaskId = null
       }
     },
-    
+
     setCurrentTask: (state, action: PayloadAction<string | null>) => {
       state.currentTaskId = action.payload
     },
-    
+
     incrementTaskPomodoros: (state, action: PayloadAction<string>) => {
-      const task = state.tasks.find(t => t.id === action.payload)
+      const task = state.tasks.find((t) => t.id === action.payload)
       if (task) {
         task.pomodoroCount += 1
       }
     },
-    
+
     // Session actions
     addSession: (state, action: PayloadAction<PomodoroSession>) => {
       state.sessions.push(action.payload)
     },
-    
+
     completeSession: (state, action: PayloadAction<{ id: string; completedAt: number }>) => {
-      const session = state.sessions.find(s => s.id === action.payload.id)
+      const session = state.sessions.find((s) => s.id === action.payload.id)
       if (session) {
         session.completedAt = action.payload.completedAt
       }
     },
-    
+
     // Increment completed pomodoro count
     incrementPomodoroCount: (state) => {
       // Create a session record
@@ -153,18 +153,18 @@ const pomodoroSlice = createSlice({
         duration: (state.settings?.workDuration || 25) * 60,
         taskId: state.currentTaskId || undefined
       }
-      
+
       state.sessions.push(session)
-      
+
       // Increment current task pomodoros
       if (state.currentTaskId) {
-        const task = state.tasks.find(t => t.id === state.currentTaskId)
+        const task = state.tasks.find((t) => t.id === state.currentTaskId)
         if (task) {
           task.pomodoroCount += 1
         }
       }
     },
-    
+
     // Reset timer
     resetTimer: (state) => {
       state.timeLeft = (state.settings?.workDuration || 25) * 60
@@ -172,26 +172,24 @@ const pomodoroSlice = createSlice({
       state.isRunning = false
       state.workCount = 0
     },
-    
+
     // Float window actions
     setShowFloatWindow: (state, action: PayloadAction<boolean>) => {
       state.showFloatWindow = action.payload
     },
-    
+
     // Cleanup old sessions (keep last 30 days)
     cleanupOldSessions: (state) => {
       const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000
-      state.sessions = state.sessions.filter(session => 
-        session.startedAt > thirtyDaysAgo
-      )
+      state.sessions = state.sessions.filter((session) => session.startedAt > thirtyDaysAgo)
     },
-    
+
     // Clear all statistics
     clearStatistics: (state) => {
       state.sessions = []
       state.workCount = 0
     },
-    
+
     // Set daily goal
     setDailyGoal: (state, action: PayloadAction<number>) => {
       if (!state.settings) {

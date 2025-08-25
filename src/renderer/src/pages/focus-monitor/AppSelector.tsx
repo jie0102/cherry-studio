@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Modal, Input, List, Typography, Space, Button, Spin, Empty, Tag, Alert } from 'antd'
-import { SearchOutlined, AppstoreOutlined } from '@ant-design/icons'
-import styled from 'styled-components'
-
-import systemAppService from '@renderer/services/SystemAppService'
+import { AppstoreOutlined, SearchOutlined } from '@ant-design/icons'
 import type { AppInfo } from '@renderer/services/SystemAppService'
+import systemAppService from '@renderer/services/SystemAppService'
+import { Alert, Button, Empty, Input, List, Modal, Space, Spin, Tag, Typography } from 'antd'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 const { Text } = Typography
 const { Search } = Input
@@ -100,13 +99,13 @@ const AppIcon = styled.div`
 
 const StatusTag = styled(Tag)`
   margin-left: 8px;
-  
+
   &.running {
     background: #f6ffed;
     border-color: #b7eb8f;
     color: #52c41a;
   }
-  
+
   &.inactive {
     background: #fafafa;
     border-color: #d9d9d9;
@@ -119,13 +118,15 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
   const [loading, setLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [runningApps, setRunningApps] = useState<AppInfo[]>([])
-  const [suggestions, setSuggestions] = useState<Array<{
-    name: string
-    originalName: string
-    isRunning: boolean
-    pid?: number
-    score: number
-  }>>([])
+  const [suggestions, setSuggestions] = useState<
+    Array<{
+      name: string
+      originalName: string
+      isRunning: boolean
+      pid?: number
+      score: number
+    }>
+  >([])
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -147,7 +148,7 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
     setError(null)
     try {
       const { runningApps: apps } = await systemAppService.getAppStatus(false)
-      const filteredApps = apps.filter(app => !excludeApps.includes(app.originalName))
+      const filteredApps = apps.filter((app) => !excludeApps.includes(app.originalName))
       setRunningApps(filteredApps)
     } catch (err) {
       setError(t('focusMonitor.appSelector.loadError'))
@@ -160,9 +161,7 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
   const loadSuggestions = async (query: string) => {
     try {
       const suggestions = await systemAppService.getAppSuggestions(query, 20)
-      const filteredSuggestions = suggestions.filter(suggestion => 
-        !excludeApps.includes(suggestion.originalName)
-      )
+      const filteredSuggestions = suggestions.filter((suggestion) => !excludeApps.includes(suggestion.originalName))
       setSuggestions(filteredSuggestions)
     } catch (err) {
       console.error('Failed to load app suggestions:', err)
@@ -195,14 +194,7 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
     }
 
     if (error) {
-      return (
-        <Alert
-          message={t('focusMonitor.appSelector.error')}
-          description={error}
-          type="error"
-          showIcon
-        />
-      )
+      return <Alert message={t('focusMonitor.appSelector.error')} description={error} type="error" showIcon />
     }
 
     if (searchText && suggestions.length > 0) {
@@ -226,7 +218,9 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
                   </AppDetails>
                 </AppInfo>
                 <StatusTag className={suggestion.isRunning ? 'running' : 'inactive'}>
-                  {suggestion.isRunning ? t('focusMonitor.appSelector.running') : t('focusMonitor.appSelector.available')}
+                  {suggestion.isRunning
+                    ? t('focusMonitor.appSelector.running')
+                    : t('focusMonitor.appSelector.available')}
                 </StatusTag>
               </AppItem>
             </List.Item>
@@ -236,12 +230,7 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
     }
 
     if (runningApps.length === 0) {
-      return (
-        <Empty
-          image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description={getEmptyText()}
-        />
-      )
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={getEmptyText()} />
     }
 
     return (
@@ -288,8 +277,7 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
           {t('common.cancel')}
         </Button>
       ]}
-      width={600}
-    >
+      width={600}>
       <SearchContainer>
         <Search
           placeholder={t('focusMonitor.appSelector.searchPlaceholder')}
@@ -300,17 +288,12 @@ const AppSelector = ({ visible, mode, onSelect, onCancel, excludeApps = [] }: Ap
         />
         <div style={{ marginTop: 8 }}>
           <Text type="secondary" style={{ fontSize: '12px' }}>
-            {searchText
-              ? t('focusMonitor.appSelector.searchHint')
-              : t('focusMonitor.appSelector.runningAppsHint')
-            }
+            {searchText ? t('focusMonitor.appSelector.searchHint') : t('focusMonitor.appSelector.runningAppsHint')}
           </Text>
         </div>
       </SearchContainer>
 
-      <ListContainer>
-        {renderAppList()}
-      </ListContainer>
+      <ListContainer>{renderAppList()}</ListContainer>
     </StyledModal>
   )
 }

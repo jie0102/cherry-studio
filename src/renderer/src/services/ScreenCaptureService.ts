@@ -76,19 +76,19 @@ class ScreenCaptureService {
           resolve()
         }
         video.onerror = () => reject(new Error('Video load failed'))
-        
+
         // Timeout after 10 seconds
         setTimeout(() => reject(new Error('Video load timeout')), 10000)
       })
 
       // Wait a bit for the video to start playing
-      await new Promise(resolve => setTimeout(resolve, 100))
+      await new Promise((resolve) => setTimeout(resolve, 100))
 
       // Create canvas to capture frame
       const canvas = document.createElement('canvas')
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
-      
+
       const ctx = canvas.getContext('2d')
       if (!ctx) {
         throw new Error('Cannot get canvas context')
@@ -101,7 +101,7 @@ class ScreenCaptureService {
       const imageData = canvas.toDataURL('image/png')
 
       // Stop stream
-      stream.getTracks().forEach(track => track.stop())
+      stream.getTracks().forEach((track) => track.stop())
 
       // Clean up
       video.remove()
@@ -114,10 +114,9 @@ class ScreenCaptureService {
         imageData,
         timestamp
       }
-
     } catch (error) {
       logger.error('Screen capture failed:', error as Error)
-      
+
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -136,16 +135,16 @@ class ScreenCaptureService {
       logger.debug(`Screen capture attempt ${attempt}/${maxRetries}`)
 
       const result = await this.captureScreen()
-      
+
       if (result.success) {
         return result
       }
 
       lastError = result.error || 'Unknown error'
-      
+
       if (attempt < maxRetries) {
         // Wait before retry
-        await new Promise(resolve => setTimeout(resolve, 1000 * attempt))
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt))
       }
     }
 
@@ -171,8 +170,8 @@ class ScreenCaptureService {
       })
 
       // Stop immediately
-      stream.getTracks().forEach(track => track.stop())
-      
+      stream.getTracks().forEach((track) => track.stop())
+
       return true
     } catch (error) {
       logger.error('Failed to request screen capture permission:', error as Error)

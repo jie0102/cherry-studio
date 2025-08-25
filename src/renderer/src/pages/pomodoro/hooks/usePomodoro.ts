@@ -1,13 +1,13 @@
-import { useCallback } from 'react'
+import PomodoroTimerService from '@renderer/services/PomodoroTimerService'
 import { useAppDispatch, useAppSelector } from '@renderer/store'
 import { setPomodoroState } from '@renderer/store/pomodoro'
-import PomodoroTimerService from '@renderer/services/PomodoroTimerService'
+import { useCallback } from 'react'
 
 export type PomodoroPhase = 'work' | 'shortBreak' | 'longBreak'
 
 export interface PomodoroSettings {
   workDuration: number // minutes
-  shortBreakDuration: number // minutes 
+  shortBreakDuration: number // minutes
   longBreakDuration: number // minutes
   longBreakInterval: number // after how many work sessions
 }
@@ -21,14 +21,14 @@ const DEFAULT_SETTINGS: PomodoroSettings = {
 
 export const usePomodoroTimer = () => {
   const timerService = PomodoroTimerService.getInstance()
-  
-  const { 
-    timeLeft, 
-    currentPhase, 
-    isRunning, 
+
+  const {
+    timeLeft,
+    currentPhase,
+    isRunning,
     workCount,
-    settings = DEFAULT_SETTINGS 
-  } = useAppSelector(state => state.pomodoro)
+    settings = DEFAULT_SETTINGS
+  } = useAppSelector((state) => state.pomodoro)
 
   // Calculate progress percentage
   const getPhaseDuration = (phase: PomodoroPhase) => {
@@ -86,12 +86,15 @@ export const usePomodoroTimer = () => {
 
 export const usePomodoroSettings = () => {
   const dispatch = useAppDispatch()
-  const settings = useAppSelector(state => state.pomodoro.settings) || DEFAULT_SETTINGS
+  const settings = useAppSelector((state) => state.pomodoro.settings) || DEFAULT_SETTINGS
 
-  const updateSettings = useCallback((newSettings: Partial<PomodoroSettings>) => {
-    const updatedSettings = { ...settings, ...newSettings }
-    dispatch(setPomodoroState({ settings: updatedSettings }))
-  }, [settings, dispatch])
+  const updateSettings = useCallback(
+    (newSettings: Partial<PomodoroSettings>) => {
+      const updatedSettings = { ...settings, ...newSettings }
+      dispatch(setPomodoroState({ settings: updatedSettings }))
+    },
+    [settings, dispatch]
+  )
 
   return {
     settings,

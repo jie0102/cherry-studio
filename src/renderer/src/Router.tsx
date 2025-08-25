@@ -10,6 +10,7 @@ import { useNavbarPosition } from './hooks/useSettings'
 import AgentsPage from './pages/agents/AgentsPage'
 import CodeToolsPage from './pages/code/CodeToolsPage'
 import FilesPage from './pages/files/FilesPage'
+import FocusMonitorPage from './pages/focus-monitor/FocusMonitorPage'
 import HomePage from './pages/home/HomePage'
 import KnowledgePage from './pages/knowledge/KnowledgePage'
 import LaunchpadPage from './pages/launchpad/LaunchpadPage'
@@ -18,7 +19,6 @@ import PaintingsRoutePage from './pages/paintings/PaintingsRoutePage'
 import PomodoroPage from './pages/pomodoro/PomodoroPage'
 import SettingsPage from './pages/settings/SettingsPage'
 import TranslatePage from './pages/translate/TranslatePage'
-import FocusMonitorPage from './pages/focus-monitor/FocusMonitorPage'
 
 const Router: FC = () => {
   const { navbarPosition } = useNavbarPosition()

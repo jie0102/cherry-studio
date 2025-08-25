@@ -1,17 +1,17 @@
+import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Navbar, NavbarCenter } from '@renderer/components/app/Navbar'
 
-import TimerDisplay from './components/TimerDisplay'
-import TimerControls from './components/TimerControls'
-import TasksList from './components/TasksList'
 import StatisticsView from './components/StatisticsView'
+import TasksList from './components/TasksList'
+import TimerControls from './components/TimerControls'
+import TimerDisplay from './components/TimerDisplay'
 import { usePomodoroFloat } from './hooks/usePomodoroFloat'
 
 const PomodoroPage: FC = () => {
   const { t } = useTranslation()
-  
+
   // Initialize float window management
   usePomodoroFloat()
 
@@ -60,11 +60,11 @@ const MainSection = styled.div`
   justify-content: center;
   min-height: 0;
   min-width: 400px;
-  
+
   @media (max-width: 1200px) {
     min-width: 350px;
   }
-  
+
   @media (max-width: 900px) {
     flex: 1.5;
     min-width: 300px;
@@ -80,11 +80,11 @@ const SideSection = styled.div`
   gap: 20px;
   overflow: hidden;
   min-height: 0;
-  
+
   @media (max-width: 1200px) {
     min-width: 300px;
   }
-  
+
   @media (max-width: 900px) {
     min-width: 280px;
   }

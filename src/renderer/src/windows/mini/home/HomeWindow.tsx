@@ -61,7 +61,7 @@ const HomeWindow: FC<{ draggable?: boolean }> = ({ draggable = true }) => {
 
   const { quickAssistantId } = useAppSelector((state) => state.llm)
   const { assistant: currentAssistant } = useAssistant(quickAssistantId)
-  
+
   // Check if pomodoro float window should be shown
   const { showFloatWindow, isRunning } = useAppSelector((state) => state.pomodoro)
   const shouldShowPomodoroFloat = showFloatWindow && isRunning

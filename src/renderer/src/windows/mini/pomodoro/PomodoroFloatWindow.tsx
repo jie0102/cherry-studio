@@ -1,13 +1,12 @@
-import { FC } from 'react'
-import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { Progress } from 'antd'
-import { Play, Pause, Square, X } from 'lucide-react'
-
 import { usePomodoroTimer } from '@renderer/pages/pomodoro/hooks/usePomodoro'
 import { usePomodoroTasks } from '@renderer/pages/pomodoro/hooks/usePomodoroTasks'
 import { useAppDispatch } from '@renderer/store'
 import { setShowFloatWindow } from '@renderer/store/pomodoro'
+import { Progress } from 'antd'
+import { Pause, Play, Square, X } from 'lucide-react'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 
 const PomodoroFloatWindow: FC = () => {
   const { t } = useTranslation()
@@ -32,9 +31,7 @@ const PomodoroFloatWindow: FC = () => {
   return (
     <Container>
       <Header>
-        <PhaseIndicator $color={getPhaseColor()}>
-          {currentPhase === 'work' ? '🍅' : '☕'}
-        </PhaseIndicator>
+        <PhaseIndicator $color={getPhaseColor()}>{currentPhase === 'work' ? '🍅' : '☕'}</PhaseIndicator>
         <CloseButton onClick={closeFloatWindow}>
           <X size={14} />
         </CloseButton>
@@ -59,9 +56,7 @@ const PomodoroFloatWindow: FC = () => {
         {currentTask ? (
           <CurrentTask>
             <TaskLabel>{t('pomodoro.float.currentTask')}:</TaskLabel>
-            <TaskTitle title={currentTask.title}>
-              {currentTask.title}
-            </TaskTitle>
+            <TaskTitle title={currentTask.title}>{currentTask.title}</TaskTitle>
           </CurrentTask>
         ) : (
           <NoTask>{t('pomodoro.float.noTask')}</NoTask>
@@ -78,7 +73,7 @@ const PomodoroFloatWindow: FC = () => {
             <Pause size={14} />
           </ControlButton>
         )}
-        
+
         <ControlButton onClick={stopTimer}>
           <Square size={14} />
         </ControlButton>
@@ -113,19 +108,24 @@ const PhaseIndicator = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
   gap: 4px;
-  
+
   &::after {
     content: '';
     width: 8px;
     height: 8px;
-    background-color: ${props => props.$color};
+    background-color: ${(props) => props.$color};
     border-radius: 50%;
     animation: pulse 1.5s ease-in-out infinite;
   }
-  
+
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 `
 
@@ -140,7 +140,7 @@ const CloseButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &:hover {
     background-color: var(--color-background-soft);
     color: var(--color-text-1);
@@ -226,20 +226,20 @@ const ControlButton = styled.button<{ $primary?: boolean }>`
   width: 32px;
   height: 24px;
   border: 1px solid var(--color-border);
-  background: ${props => props.$primary ? 'var(--color-primary)' : 'var(--color-background-soft)'};
-  color: ${props => props.$primary ? 'white' : 'var(--color-text-2)'};
+  background: ${(props) => (props.$primary ? 'var(--color-primary)' : 'var(--color-background-soft)')};
+  color: ${(props) => (props.$primary ? 'white' : 'var(--color-text-2)')};
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  
+
   &:hover {
-    background: ${props => props.$primary ? 'var(--color-primary-hover)' : 'var(--color-background)'};
+    background: ${(props) => (props.$primary ? 'var(--color-primary-hover)' : 'var(--color-background)')};
     transform: translateY(-1px);
   }
-  
+
   &:active {
     transform: translateY(0);
   }

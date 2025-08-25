@@ -1,12 +1,12 @@
 import { AppNameNormalizer } from '@renderer/utils/AppNameNormalizer'
 
 export interface AppInfo {
-  name: string           // Normalized app name
-  originalName: string   // Original app name from system
-  title?: string         // Window title (if available)
-  pid: number           // Process ID
-  isActive: boolean     // Whether this is the active/foreground app
-  memoryUsage?: number  // Memory usage in MB
+  name: string // Normalized app name
+  originalName: string // Original app name from system
+  title?: string // Window title (if available)
+  pid: number // Process ID
+  isActive: boolean // Whether this is the active/foreground app
+  memoryUsage?: number // Memory usage in MB
   executablePath?: string // Path to executable
 }
 
@@ -59,7 +59,7 @@ class SystemAppService {
     try {
       // Call main process via IPC to get active window info
       const activeWindow = await window.api?.system?.getActiveWindow?.()
-      
+
       if (!activeWindow) {
         return null
       }
@@ -88,14 +88,14 @@ class SystemAppService {
     try {
       // Call main process via IPC to get process list
       const processes = await window.api?.system?.getRunningProcesses?.()
-      
+
       if (!Array.isArray(processes)) {
         return []
       }
 
       return processes
-        .filter(proc => proc.name && proc.name.trim().length > 0)
-        .map(proc => ({
+        .filter((proc) => proc.name && proc.name.trim().length > 0)
+        .map((proc) => ({
           name: AppNameNormalizer.normalizeBasic(proc.name),
           originalName: proc.name,
           pid: proc.pid || 0,
@@ -114,10 +114,10 @@ class SystemAppService {
    */
   async getAppStatus(useCache: boolean = true): Promise<AppStatusResult> {
     const now = Date.now()
-    
+
     // Return cached result if still valid
-    if (useCache && this.cachedApps.length > 0 && (now - this.lastFetchTime) < this.CACHE_DURATION) {
-      const activeApp = this.cachedApps.find(app => app.isActive) || null
+    if (useCache && this.cachedApps.length > 0 && now - this.lastFetchTime < this.CACHE_DURATION) {
+      const activeApp = this.cachedApps.find((app) => app.isActive) || null
       return {
         activeApp,
         runningApps: this.cachedApps,
@@ -128,14 +128,11 @@ class SystemAppService {
 
     try {
       // Fetch both active app and process list concurrently
-      const [activeApp, processes] = await Promise.all([
-        this.getActiveApp(),
-        this.getRunningProcesses()
-      ])
+      const [activeApp, processes] = await Promise.all([this.getActiveApp(), this.getRunningProcesses()])
 
       // Create app info list, avoiding duplicates
       const appMap = new Map<number, AppInfo>()
-      
+
       // Add active app first
       if (activeApp && activeApp.pid > 0) {
         appMap.set(activeApp.pid, activeApp)
@@ -157,7 +154,7 @@ class SystemAppService {
       // Convert to array and mark active app
       const runningApps = Array.from(appMap.values())
       if (activeApp && activeApp.pid > 0) {
-        const activeAppInList = runningApps.find(app => app.pid === activeApp.pid)
+        const activeAppInList = runningApps.find((app) => app.pid === activeApp.pid)
         if (activeAppInList) {
           activeAppInList.isActive = true
           activeAppInList.title = activeApp.title
@@ -188,7 +185,10 @@ class SystemAppService {
   /**
    * Find matching apps from running apps list
    */
-  findMatchingApps(targetName: string, runningApps: AppInfo[]): Array<{
+  findMatchingApps(
+    targetName: string,
+    runningApps: AppInfo[]
+  ): Array<{
     app: AppInfo
     score: number
   }> {
@@ -196,12 +196,12 @@ class SystemAppService {
       return []
     }
 
-    const appNames = runningApps.map(app => app.originalName)
+    const appNames = runningApps.map((app) => app.originalName)
     const matches = AppNameNormalizer.findAllMatches(targetName, appNames, 0.6)
 
     return matches
-      .map(match => {
-        const app = runningApps.find(a => a.originalName === match.app)
+      .map((match) => {
+        const app = runningApps.find((a) => a.originalName === match.app)
         return app ? { app, score: match.score } : null
       })
       .filter(Boolean) as Array<{ app: AppInfo; score: number }>
@@ -231,7 +231,7 @@ class SystemAppService {
 
     for (const blockedApp of blockedApps) {
       const matches = this.findMatchingApps(blockedApp, runningApps)
-      
+
       for (const match of matches) {
         detectedApps.push({
           app: match.app,
@@ -269,7 +269,7 @@ class SystemAppService {
     }
 
     const activeApp = await this.getActiveApp()
-    
+
     if (!activeApp) {
       return {
         isAllowed: true, // No active app detected
@@ -279,7 +279,7 @@ class SystemAppService {
     }
 
     const matchResult = AppNameNormalizer.findBestMatch(activeApp.originalName, allowedApps)
-    
+
     return {
       isAllowed: matchResult.score > 0.6,
       activeApp,
@@ -293,24 +293,29 @@ class SystemAppService {
   /**
    * Get app suggestions based on partial name input
    */
-  async getAppSuggestions(partialName: string, maxSuggestions: number = 10): Promise<Array<{
-    name: string
-    originalName: string
-    isRunning: boolean
-    pid?: number
-    score: number
-  }>> {
+  async getAppSuggestions(
+    partialName: string,
+    maxSuggestions: number = 10
+  ): Promise<
+    Array<{
+      name: string
+      originalName: string
+      isRunning: boolean
+      pid?: number
+      score: number
+    }>
+  > {
     if (!partialName || partialName.length < 2) {
       return []
     }
 
     const { runningApps } = await this.getAppStatus()
-    const runningAppNames = runningApps.map(app => app.originalName)
-    
+    const runningAppNames = runningApps.map((app) => app.originalName)
+
     const suggestions = AppNameNormalizer.suggestAppNames(partialName, runningAppNames, maxSuggestions)
-    
-    return suggestions.map(suggestion => {
-      const runningApp = runningApps.find(app => app.originalName === suggestion.app)
+
+    return suggestions.map((suggestion) => {
+      const runningApp = runningApps.find((app) => app.originalName === suggestion.app)
       return {
         name: AppNameNormalizer.normalizeBasic(suggestion.app),
         originalName: suggestion.app,
@@ -334,18 +339,18 @@ class SystemAppService {
     uniqueAppNames: number
   }> {
     const { runningApps } = await this.getAppStatus()
-    
+
     const totalMemoryUsage = runningApps.reduce((sum, app) => sum + (app.memoryUsage || 0), 0)
     const topMemoryApps = runningApps
-      .filter(app => app.memoryUsage && app.memoryUsage > 0)
+      .filter((app) => app.memoryUsage && app.memoryUsage > 0)
       .sort((a, b) => (b.memoryUsage || 0) - (a.memoryUsage || 0))
       .slice(0, 10)
-      .map(app => ({
+      .map((app) => ({
         name: app.originalName,
         memoryUsage: app.memoryUsage || 0
       }))
 
-    const uniqueNames = new Set(runningApps.map(app => app.name.toLowerCase()))
+    const uniqueNames = new Set(runningApps.map((app) => app.name.toLowerCase()))
 
     return {
       totalApps: runningApps.length,
@@ -377,7 +382,7 @@ class SystemAppService {
     try {
       const hasActiveWindowAPI = typeof window.api?.system?.getActiveWindow === 'function'
       const hasProcessListAPI = typeof window.api?.system?.getRunningProcesses === 'function'
-      
+
       return {
         isSupported: hasActiveWindowAPI && hasProcessListAPI,
         features: {

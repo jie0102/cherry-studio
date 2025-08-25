@@ -55,12 +55,12 @@ export interface ProcessInfo {
   pid: number
   ppid?: number
   memory?: number // bytes
-  cpu?: number    // percentage
+  cpu?: number // percentage
 }
 
 class SystemAppService {
   private static instance: SystemAppService
-  
+
   private constructor() {}
 
   static getInstance(): SystemAppService {
@@ -81,7 +81,7 @@ class SystemAppService {
       }
 
       const result = await activeWindow()
-      
+
       if (!result) {
         logger.warn('No active window detected')
         return null
@@ -124,7 +124,7 @@ class SystemAppService {
       }
 
       const processes = await psList()
-      
+
       if (!Array.isArray(processes)) {
         logger.warn('Unexpected ps-list result format')
         return []
@@ -139,7 +139,7 @@ class SystemAppService {
           memory: Number(proc.memory) || undefined,
           cpu: Number(proc.cpu) || undefined
         }))
-        .filter(proc => proc.pid > 0) // Filter out invalid PIDs
+        .filter((proc) => proc.pid > 0) // Filter out invalid PIDs
     } catch (error) {
       logger.error('Failed to get running processes:', error as Error)
       return []
@@ -157,12 +157,9 @@ class SystemAppService {
     hasPsList: boolean
   }> {
     const timestamp = Date.now()
-    
+
     // Run both operations in parallel for better performance
-    const [activeWindow, runningProcesses] = await Promise.all([
-      this.getActiveWindow(),
-      this.getRunningProcesses()
-    ])
+    const [activeWindow, runningProcesses] = await Promise.all([this.getActiveWindow(), this.getRunningProcesses()])
 
     return {
       activeWindow,

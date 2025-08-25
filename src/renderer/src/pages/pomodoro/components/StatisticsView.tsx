@@ -1,27 +1,20 @@
+import { useAppDispatch } from '@renderer/store'
+import { clearStatistics, setDailyGoal } from '@renderer/store/pomodoro'
+import { Button, InputNumber, Modal, Progress } from 'antd'
+import { Calendar, Clock, Settings, Target, Trash2, TrendingUp } from 'lucide-react'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Progress, Button, InputNumber, Modal } from 'antd'
-import { TrendingUp, Target, Calendar, Clock, Trash2, Settings } from 'lucide-react'
 
 import { usePomodoroStats } from '../hooks/usePomodoroStats'
-import { useAppDispatch } from '@renderer/store'
-import { clearStatistics, setDailyGoal } from '@renderer/store/pomodoro'
 
 const StatisticsView: FC = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [isGoalModalVisible, setIsGoalModalVisible] = useState(false)
   const [tempGoal, setTempGoal] = useState(8)
-  
-  const { 
-    todayCount, 
-    weeklyCount, 
-    monthlyCount, 
-    dailyGoal,
-    todayMinutes,
-    streakDays 
-  } = usePomodoroStats()
+
+  const { todayCount, weeklyCount, monthlyCount, dailyGoal, todayMinutes, streakDays } = usePomodoroStats()
 
   const goalProgress = dailyGoal > 0 ? (todayCount / dailyGoal) * 100 : 0
 
@@ -144,13 +137,15 @@ const StatisticsView: FC = () => {
 
       {dailyGoal > 0 && (
         <GoalSection>
-          <GoalTitle>{t('pomodoro.stats.dailyGoal')}: {dailyGoal}</GoalTitle>
+          <GoalTitle>
+            {t('pomodoro.stats.dailyGoal')}: {dailyGoal}
+          </GoalTitle>
           <GoalProgress>
             <Progress
               percent={goalProgress}
               strokeColor={{
                 '0%': '#667eea',
-                '100%': '#764ba2',
+                '100%': '#764ba2'
               }}
               trailColor="var(--color-border-soft)"
               strokeWidth={8}
@@ -167,8 +162,7 @@ const StatisticsView: FC = () => {
         onCancel={handleGoalCancel}
         okText={t('common.confirm')}
         cancelText={t('common.cancel')}
-        width={400}
-      >
+        width={400}>
         <GoalModalContent>
           <p>{t('pomodoro.stats.setGoalDescription')}</p>
           <InputNumber
@@ -196,20 +190,20 @@ const Container = styled.div`
   padding: 24px;
   border: 1px solid var(--color-border);
   overflow-y: auto;
-  
+
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: var(--color-background);
     border-radius: 3px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: var(--color-border);
     border-radius: 3px;
-    
+
     &:hover {
       background: var(--color-text-4);
     }
@@ -257,7 +251,7 @@ const StatIcon = styled.div`
   background-color: var(--color-background-soft);
   border: 1px solid var(--color-border-soft);
   flex-shrink: 0;
-  
+
   svg {
     opacity: 0.9;
   }
@@ -285,7 +279,7 @@ const ProgressBar = styled(Progress)`
   .ant-progress-bg {
     border-radius: 3px;
   }
-  
+
   .ant-progress-outer {
     .ant-progress-inner {
       border-radius: 3px;
@@ -352,7 +346,7 @@ const ActionButton = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   &:hover {
     transform: scale(1.05);
   }
@@ -360,7 +354,7 @@ const ActionButton = styled(Button)`
 
 const GoalModalContent = styled.div`
   padding: 12px 0;
-  
+
   p {
     margin-bottom: 16px;
     color: var(--color-text-2);
