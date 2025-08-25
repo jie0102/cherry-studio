@@ -1565,6 +1565,124 @@
     },
     "title": "Ollama"
   },
+  "pomodoro": {
+    "title": "番茄钟",
+    "phase": {
+      "work": "工作时间",
+      "shortBreak": "短休息",
+      "longBreak": "长休息"
+    },
+    "status": {
+      "running": "进行中",
+      "paused": "已暂停"
+    },
+    "controls": {
+      "start": "开始",
+      "pause": "暂停",
+      "stop": "停止",
+      "skipToBreak": "跳过至休息",
+      "skipToWork": "跳过至工作"
+    },
+    "tasks": {
+      "title": "任务列表",
+      "remaining": "个待完成",
+      "addPlaceholder": "添加新任务...",
+      "current": "当前任务"
+    },
+    "stats": {
+      "title": "统计数据",
+      "today": "今日完成",
+      "thisWeek": "本周完成",
+      "thisMonth": "本月完成",
+      "minutesToday": "今日分钟",
+      "dayStreak": "天连续",
+      "dailyGoal": "每日目标",
+      "clear": "清空统计",
+      "setGoal": "设置目标",
+      "clearConfirm": {
+        "title": "清空统计数据",
+        "message": "确定要清空所有统计数据吗？此操作不可撤销。"
+      },
+      "clearSuccess": "统计数据已清空",
+      "setGoalTitle": "设置每日目标",
+      "setGoalDescription": "请设置您的每日番茄钟目标数量（1-20个）：",
+      "pomodorosUnit": "个番茄钟",
+      "goalUpdated": "目标已更新",
+      "goalError": "目标必须在1-20之间"
+    },
+    "settings": {
+      "title": "番茄钟设置",
+      "workDuration": "工作时长（分钟）",
+      "shortBreakDuration": "短休息时长（分钟）",
+      "longBreakDuration": "长休息时长（分钟）",
+      "longBreakInterval": "长休息间隔（工作次数）",
+      "dailyGoal": "每日目标（个番茄钟）",
+      "showFloatWindow": "显示悬浮窗口",
+      "notifications": "桌面通知"
+    },
+    "float": {
+      "currentTask": "当前任务",
+      "noTask": "无任务"
+    }
+  },
+  "focusMonitor": {
+    "title": "专注监督",
+    "description": "AI驱动的智能专注监督，帮助您保持专注状态",
+    "config": {
+      "title": "监控配置",
+      "taskDescription": "任务描述",
+      "taskDescriptionPlaceholder": "请描述您当前专注的工作任务...",
+      "frequency": "监控频率",
+      "seconds": "秒",
+      "frequencyHint": "建议设置30-120秒之间，过于频繁可能影响工作",
+      "allowedApps": "允许使用的应用",
+      "addAllowedApp": "添加允许应用",
+      "blockedApps": "禁止使用的应用", 
+      "addBlockedApp": "添加禁止应用"
+    },
+    "actions": {
+      "start": "开始监控",
+      "stop": "停止监控"
+    },
+    "status": {
+      "title": "监控状态",
+      "inactive": "监控未激活",
+      "active": "监控中 - 上次检查: {{time}}",
+      "starting": "正在启动..."
+    },
+    "statistics": {
+      "title": "专注统计",
+      "totalChecks": "总检查次数",
+      "focusedChecks": "专注次数",
+      "distractedChecks": "分心次数",
+      "focusRate": "专注率"
+    },
+    "logs": {
+      "title": "监控日志",
+      "clear": "清空日志",
+      "empty": "暂无监控记录",
+      "focused": "专注",
+      "distracted": "分心",
+      "activeApp": "当前应用"
+    },
+    "appSelector": {
+      "selectAllowedApp": "选择允许使用的应用",
+      "selectBlockedApp": "选择禁止使用的应用",
+      "searchPlaceholder": "搜索应用名称...",
+      "searchHint": "输入应用名称进行智能搜索匹配",
+      "runningAppsHint": "显示当前正在运行的应用程序",
+      "running": "运行中",
+      "available": "可用",
+      "noApps": "未找到可用应用",
+      "noSearchResults": "未找到匹配的应用",
+      "loadError": "加载应用列表失败",
+      "error": "错误"
+    },
+    "unsupported": {
+      "title": "系统不支持",
+      "description": "当前系统不支持应用检测功能，专注监督功能将无法使用。"
+    }
+  },
   "paintings": {
     "aspect_ratio": "画幅比例",
     "aspect_ratios": {

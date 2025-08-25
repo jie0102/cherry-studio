@@ -195,6 +195,10 @@ export enum IpcChannel {
   // system
   System_GetDeviceType = 'system:getDeviceType',
   System_GetHostname = 'system:getHostname',
+  System_GetActiveWindow = 'system:getActiveWindow',
+  System_GetRunningProcesses = 'system:getRunningProcesses',
+  System_GetAppInfo = 'system:getAppInfo',
+  System_GetAppDiagnostics = 'system:getAppDiagnostics',
 
   // DevTools
   System_ToggleDevTools = 'system:toggleDevTools',

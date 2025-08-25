@@ -23,6 +23,7 @@ import DxtService from './services/DxtService'
 import { ExportService } from './services/ExportService'
 import { fileStorage as fileManager } from './services/FileStorage'
 import FileService from './services/FileSystemService'
+import systemAppService from './services/SystemAppService'
 import KnowledgeService from './services/KnowledgeService'
 import mcpService from './services/MCPService'
 import MemoryService from './services/memory/MemoryService'
@@ -396,6 +397,10 @@ export function registerIpc(mainWindow: BrowserWindow, app: Electron.App) {
   // system
   ipcMain.handle(IpcChannel.System_GetDeviceType, () => (isMac ? 'mac' : isWin ? 'windows' : 'linux'))
   ipcMain.handle(IpcChannel.System_GetHostname, () => require('os').hostname())
+  ipcMain.handle(IpcChannel.System_GetActiveWindow, () => systemAppService.getActiveWindow())
+  ipcMain.handle(IpcChannel.System_GetRunningProcesses, () => systemAppService.getRunningProcesses())
+  ipcMain.handle(IpcChannel.System_GetAppInfo, () => systemAppService.getSystemAppInfo())
+  ipcMain.handle(IpcChannel.System_GetAppDiagnostics, () => systemAppService.getDiagnostics())
   ipcMain.handle(IpcChannel.System_ToggleDevTools, (e) => {
     const win = BrowserWindow.fromWebContents(e.sender)
     win && win.webContents.toggleDevTools()

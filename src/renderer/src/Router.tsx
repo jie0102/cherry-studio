@@ -15,8 +15,10 @@ import KnowledgePage from './pages/knowledge/KnowledgePage'
 import LaunchpadPage from './pages/launchpad/LaunchpadPage'
 import MinAppsPage from './pages/minapps/MinAppsPage'
 import PaintingsRoutePage from './pages/paintings/PaintingsRoutePage'
+import PomodoroPage from './pages/pomodoro/PomodoroPage'
 import SettingsPage from './pages/settings/SettingsPage'
 import TranslatePage from './pages/translate/TranslatePage'
+import FocusMonitorPage from './pages/focus-monitor/FocusMonitorPage'
 
 const Router: FC = () => {
   const { navbarPosition } = useNavbarPosition()
@@ -28,6 +30,8 @@ const Router: FC = () => {
         <Route path="/agents" element={<AgentsPage />} />
         <Route path="/paintings/*" element={<PaintingsRoutePage />} />
         <Route path="/translate" element={<TranslatePage />} />
+        <Route path="/pomodoro" element={<PomodoroPage />} />
+        <Route path="/focus-monitor" element={<FocusMonitorPage />} />
         <Route path="/files" element={<FilesPage />} />
         <Route path="/knowledge" element={<KnowledgePage />} />
         <Route path="/apps" element={<MinAppsPage />} />

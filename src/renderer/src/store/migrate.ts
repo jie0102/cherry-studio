@@ -2174,6 +2174,51 @@ const migrateConfig = {
       logger.error('migrate 136 error', error as Error)
       return state
     }
+  },
+  '137': (state: RootState) => {
+    try {
+      // Add pomodoro icon to visible sidebar icons if it's not already present
+      if (state.settings?.sidebarIcons && !state.settings.sidebarIcons.visible.includes('pomodoro')) {
+        // Insert pomodoro after translate to match the intended order
+        const translateIndex = state.settings.sidebarIcons.visible.indexOf('translate')
+        if (translateIndex >= 0) {
+          state.settings.sidebarIcons.visible.splice(translateIndex + 1, 0, 'pomodoro')
+        } else {
+          // If translate not found, just add it to the visible list
+          state.settings.sidebarIcons.visible.push('pomodoro')
+        }
+      }
+      
+      // Initialize pomodoro state if it doesn't exist
+      if (!state.pomodoro) {
+        state.pomodoro = {
+          timeLeft: 25 * 60, // 25 minutes
+          currentPhase: 'work',
+          isRunning: false,
+          workCount: 0,
+          
+          settings: {
+            workDuration: 25,
+            shortBreakDuration: 5,
+            longBreakDuration: 15,
+            longBreakInterval: 4,
+            dailyGoal: 8,
+            showFloatWindow: true,
+            enableNotifications: true
+          },
+          
+          tasks: [],
+          currentTaskId: null,
+          sessions: [],
+          showFloatWindow: false
+        }
+      }
+      
+      return state
+    } catch (error) {
+      logger.error('migrate 137 error', error as Error)
+      return state
+    }
   }
 }
 

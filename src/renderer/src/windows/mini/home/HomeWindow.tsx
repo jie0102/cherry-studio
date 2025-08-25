@@ -28,6 +28,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import ChatWindow from '../chat/ChatWindow'
+import PomodoroFloatWindow from '../pomodoro/PomodoroFloatWindow'
 import TranslateWindow from '../translate/TranslateWindow'
 import ClipboardPreview from './components/ClipboardPreview'
 import FeatureMenus, { FeatureMenusRef } from './components/FeatureMenus'
@@ -60,6 +61,10 @@ const HomeWindow: FC<{ draggable?: boolean }> = ({ draggable = true }) => {
 
   const { quickAssistantId } = useAppSelector((state) => state.llm)
   const { assistant: currentAssistant } = useAssistant(quickAssistantId)
+  
+  // Check if pomodoro float window should be shown
+  const { showFloatWindow, isRunning } = useAppSelector((state) => state.pomodoro)
+  const shouldShowPomodoroFloat = showFloatWindow && isRunning
 
   const currentTopic = useRef<Topic>(getDefaultTopic(currentAssistant.id))
   const currentAskId = useRef('')
@@ -481,6 +486,11 @@ const HomeWindow: FC<{ draggable?: boolean }> = ({ draggable = true }) => {
     }),
     [route, isLoading, handleEsc, isPinned]
   )
+
+  // If pomodoro timer is running and float window is enabled, show pomodoro float window
+  if (shouldShowPomodoroFloat) {
+    return <PomodoroFloatWindow />
+  }
 
   switch (route) {
     case 'chat':

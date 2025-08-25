@@ -25,7 +25,9 @@ import {
   Palette,
   Settings,
   Sparkle,
-  Sun
+  Sun,
+  Timer,
+  Eye
 } from 'lucide-react'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -134,6 +136,8 @@ const MainMenus: FC = () => {
     agents: <Sparkle size={18} className="icon" />,
     paintings: <Palette size={18} className="icon" />,
     translate: <Languages size={18} className="icon" />,
+    pomodoro: <Timer size={18} className="icon" />,
+    focusMonitor: <Eye size={18} className="icon" />,
     minapp: <LayoutGrid size={18} className="icon" />,
     knowledge: <FileSearch size={18} className="icon" />,
     files: <Folder size={17} className="icon" />,
@@ -145,6 +149,8 @@ const MainMenus: FC = () => {
     agents: '/agents',
     paintings: `/paintings/${defaultPaintingProvider}`,
     translate: '/translate',
+    pomodoro: '/pomodoro',
+    focusMonitor: '/focus-monitor',
     minapp: '/apps',
     knowledge: '/knowledge',
     files: '/files',

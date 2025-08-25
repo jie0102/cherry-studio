@@ -19,6 +19,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **Run Tests**: `yarn test` - Runs all tests (Vitest)
 - **Run E2E Tests**: `yarn test:e2e` - Playwright end-to-end tests
+- **Run Specific Tests**: `yarn test:main` (main process), `yarn test:renderer` (renderer process)
+- **Test UI**: `yarn test:ui` - Interactive test runner
+- **Coverage**: `yarn test:coverage` - Generate test coverage reports
 - **Type Check**: `yarn typecheck` - Checks TypeScript for both node and web
 - **Lint**: `yarn lint` - ESLint with auto-fix
 - **Format**: `yarn format` - Prettier formatting
@@ -74,8 +77,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Electron-Vite**: Development and build tooling (v4.0.0)
 - **Rolldown-Vite**: Using experimental rolldown-vite instead of standard vite
 - **Workspaces**: Monorepo structure with `packages/` directory
-- **Multiple Entry Points**: Main app, mini window, selection toolbar
+- **Multiple Entry Points**: Main app, mini window, selection toolbar, selection action, trace window
 - **Styled Components**: CSS-in-JS styling with SWC optimization
+- **TypeScript**: Multi-project setup with separate configs for node and web environments
 
 ### Testing Strategy
 

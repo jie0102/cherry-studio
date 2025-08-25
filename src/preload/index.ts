@@ -86,7 +86,11 @@ const api = {
   },
   system: {
     getDeviceType: () => ipcRenderer.invoke(IpcChannel.System_GetDeviceType),
-    getHostname: () => ipcRenderer.invoke(IpcChannel.System_GetHostname)
+    getHostname: () => ipcRenderer.invoke(IpcChannel.System_GetHostname),
+    getActiveWindow: () => ipcRenderer.invoke(IpcChannel.System_GetActiveWindow),
+    getRunningProcesses: () => ipcRenderer.invoke(IpcChannel.System_GetRunningProcesses),
+    getAppInfo: () => ipcRenderer.invoke(IpcChannel.System_GetAppInfo),
+    getAppDiagnostics: () => ipcRenderer.invoke(IpcChannel.System_GetAppDiagnostics)
   },
   devTools: {
     toggle: () => ipcRenderer.invoke(IpcChannel.System_ToggleDevTools)

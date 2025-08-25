@@ -708,6 +708,7 @@ export type SidebarIcon =
   | 'knowledge'
   | 'files'
   | 'code_tools'
+  | 'pomodoro'
 
 export type ExternalToolResult = {
   mcpTools?: MCPTool[]

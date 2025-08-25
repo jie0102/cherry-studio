@@ -7,7 +7,7 @@ import { DEFAULT_SIDEBAR_ICONS } from '@renderer/config/sidebar'
 import { useTheme } from '@renderer/context/ThemeProvider'
 import { useNavbarPosition, useSettings } from '@renderer/hooks/useSettings'
 import useUserTheme from '@renderer/hooks/useUserTheme'
-import { useAppDispatch } from '@renderer/store'
+import { useAppDispatch, useAppSelector } from '@renderer/store'
 import {
   AssistantIconType,
   setAssistantIconType,
@@ -17,6 +17,7 @@ import {
   setShowTopicTime,
   setSidebarIcons
 } from '@renderer/store/settings'
+import { updateSettings } from '@renderer/store/pomodoro'
 import { ThemeMode } from '@renderer/types'
 import { Button, ColorPicker, Segmented, Switch } from 'antd'
 import { Minus, Monitor, Moon, Plus, Sun } from 'lucide-react'
@@ -78,6 +79,9 @@ const DisplaySettings: FC = () => {
 
   const [visibleIcons, setVisibleIcons] = useState(sidebarIcons?.visible || DEFAULT_SIDEBAR_ICONS)
   const [disabledIcons, setDisabledIcons] = useState(sidebarIcons?.disabled || [])
+  
+  // Pomodoro settings
+  const { settings: pomodoroSettings } = useAppSelector((state) => state.pomodoro)
 
   const handleWindowStyleChange = useCallback(
     (checked: boolean) => {
@@ -101,6 +105,13 @@ const DisplaySettings: FC = () => {
     setDisabledIcons([])
     dispatch(setSidebarIcons({ visible: DEFAULT_SIDEBAR_ICONS, disabled: [] }))
   }, [dispatch])
+  
+  const handlePomodoroFloatWindowChange = useCallback(
+    (checked: boolean) => {
+      dispatch(updateSettings({ showFloatWindow: checked }))
+    },
+    [dispatch]
+  )
 
   const themeOptions = useMemo(
     () => [
@@ -303,6 +314,17 @@ const DisplaySettings: FC = () => {
             shape="round"
             onChange={(value) => dispatch(setAssistantIconType(value as AssistantIconType))}
             options={assistantIconTypeOptions}
+          />
+        </SettingRow>
+      </SettingGroup>
+      <SettingGroup theme={theme}>
+        <SettingTitle>{t('pomodoro.settings.title')}</SettingTitle>
+        <SettingDivider />
+        <SettingRow>
+          <SettingRowTitle>{t('pomodoro.settings.showFloatWindow')}</SettingRowTitle>
+          <Switch
+            checked={pomodoroSettings?.showFloatWindow || false}
+            onChange={handlePomodoroFloatWindowChange}
           />
         </SettingRow>
       </SettingGroup>

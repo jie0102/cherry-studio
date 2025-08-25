@@ -142,6 +142,8 @@ const sidebarIconKeyMap = {
   agents: 'agents.title',
   paintings: 'paintings.title',
   translate: 'translate.title',
+  pomodoro: 'pomodoro.title',
+  focusMonitor: 'focusMonitor.title',
   minapp: 'minapp.title',
   knowledge: 'knowledge.title',
   files: 'files.title',

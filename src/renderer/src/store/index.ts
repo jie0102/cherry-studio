@@ -21,6 +21,8 @@ import minapps from './minapps'
 import newMessagesReducer from './newMessage'
 import nutstore from './nutstore'
 import paintings from './paintings'
+import pomodoro from './pomodoro'
+import focusMonitor from './focusMonitor'
 import preprocess from './preprocess'
 import runtime from './runtime'
 import selectionStore from './selectionStore'
@@ -39,6 +41,8 @@ const rootReducer = combineReducers({
   codeTools,
   nutstore,
   paintings,
+  pomodoro,
+  focusMonitor,
   llm,
   settings,
   runtime,
@@ -62,7 +66,7 @@ const persistedReducer = persistReducer(
   {
     key: 'cherry-studio',
     storage,
-    version: 136,
+    version: 137,
     blacklist: ['runtime', 'messages', 'messageBlocks', 'tabs'],
     migrate
   },

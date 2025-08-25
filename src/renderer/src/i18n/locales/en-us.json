@@ -1565,6 +1565,124 @@
     },
     "title": "Ollama"
   },
+  "pomodoro": {
+    "title": "Pomodoro Timer",
+    "phase": {
+      "work": "Work Time",
+      "shortBreak": "Short Break",
+      "longBreak": "Long Break"
+    },
+    "status": {
+      "running": "Running",
+      "paused": "Paused"
+    },
+    "controls": {
+      "start": "Start",
+      "pause": "Pause",
+      "stop": "Stop",
+      "skipToBreak": "Skip to Break",
+      "skipToWork": "Skip to Work"
+    },
+    "tasks": {
+      "title": "Task List",
+      "remaining": "remaining",
+      "addPlaceholder": "Add new task...",
+      "current": "Current Task"
+    },
+    "stats": {
+      "title": "Statistics",
+      "today": "Today",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "minutesToday": "Minutes Today",
+      "dayStreak": "Day Streak",
+      "dailyGoal": "Daily Goal",
+      "clear": "Clear Statistics",
+      "setGoal": "Set Goal",
+      "clearConfirm": {
+        "title": "Clear Statistics",
+        "message": "Are you sure you want to clear all statistics? This action cannot be undone."
+      },
+      "clearSuccess": "Statistics cleared successfully",
+      "setGoalTitle": "Set Daily Goal",
+      "setGoalDescription": "Please set your daily pomodoro goal (1-20 pomodoros):",
+      "pomodorosUnit": "pomodoros",
+      "goalUpdated": "Goal updated successfully",
+      "goalError": "Goal must be between 1-20"
+    },
+    "settings": {
+      "title": "Pomodoro Settings",
+      "workDuration": "Work Duration (minutes)",
+      "shortBreakDuration": "Short Break Duration (minutes)",
+      "longBreakDuration": "Long Break Duration (minutes)",
+      "longBreakInterval": "Long Break Interval (work sessions)",
+      "dailyGoal": "Daily Goal (pomodoros)",
+      "showFloatWindow": "Show Float Window",
+      "notifications": "Desktop Notifications"
+    },
+    "float": {
+      "currentTask": "Current Task",
+      "noTask": "No Task"
+    }
+  },
+  "focusMonitor": {
+    "title": "Focus Monitor",
+    "description": "AI-powered intelligent focus monitoring to help you stay concentrated",
+    "config": {
+      "title": "Monitor Configuration",
+      "taskDescription": "Task Description",
+      "taskDescriptionPlaceholder": "Please describe the work task you are currently focusing on...",
+      "frequency": "Monitor Frequency",
+      "seconds": "seconds",
+      "frequencyHint": "Recommend setting between 30-120 seconds, too frequent may affect work",
+      "allowedApps": "Allowed Applications",
+      "addAllowedApp": "Add Allowed App",
+      "blockedApps": "Blocked Applications",
+      "addBlockedApp": "Add Blocked App"
+    },
+    "actions": {
+      "start": "Start Monitoring",
+      "stop": "Stop Monitoring"
+    },
+    "status": {
+      "title": "Monitor Status",
+      "inactive": "Monitoring Inactive",
+      "active": "Monitoring - Last Check: {{time}}",
+      "starting": "Starting..."
+    },
+    "statistics": {
+      "title": "Focus Statistics",
+      "totalChecks": "Total Checks",
+      "focusedChecks": "Focused Times",
+      "distractedChecks": "Distracted Times",
+      "focusRate": "Focus Rate"
+    },
+    "logs": {
+      "title": "Monitor Logs",
+      "clear": "Clear Logs",
+      "empty": "No monitoring records yet",
+      "focused": "Focused",
+      "distracted": "Distracted",
+      "activeApp": "Active App"
+    },
+    "appSelector": {
+      "selectAllowedApp": "Select Allowed Application",
+      "selectBlockedApp": "Select Blocked Application",
+      "searchPlaceholder": "Search application name...",
+      "searchHint": "Enter application name for intelligent search matching",
+      "runningAppsHint": "Shows currently running applications",
+      "running": "Running",
+      "available": "Available",
+      "noApps": "No available applications found",
+      "noSearchResults": "No matching applications found",
+      "loadError": "Failed to load application list",
+      "error": "Error"
+    },
+    "unsupported": {
+      "title": "System Not Supported",
+      "description": "The current system does not support application detection functionality, focus monitoring will be unavailable."
+    }
+  },
   "paintings": {
     "aspect_ratio": "Aspect Ratio",
     "aspect_ratios": {
